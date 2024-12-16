@@ -1,4 +1,3 @@
-#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -140,12 +139,9 @@ bool move_block(Coord c0, size_t k) {
     if (data[c3.i][c3.j] != '.' && block.insert(c3).second) stack.push_back(c3);
   }
   unordered_map<Coord, char> moved_block;
-  for (Coord c0 : block) {
-    Coord c1 = c0.move(k);
-    assert(moved_block.insert({c1, data[c0.i][c0.j]}).second);
-  }
+  for (Coord c0 : block) moved_block.insert({c0.move(k), data[c0.i][c0.j]});
   for (Coord c0 : block) data[c0.i][c0.j] = '.';
-  for (auto [c0, c] : moved_block) data[c0.i][c0.j] = c;
+  for (auto [c1, c0_value] : moved_block) data[c1.i][c1.j] = c0_value;
   return true;
 }
 
